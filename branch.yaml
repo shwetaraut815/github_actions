@@ -1,0 +1,65 @@
+# .github/
+# └── workflows/
+#     └── cicd.yml
+
+
+name: CI-CD
+
+on:
+  push:
+    branches:
+      - dev
+      - qa
+      - uat
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Building for $GITHUB_REF_NAME"
+
+  deploy-dev:
+    if: github.ref_name == 'dev'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying to DEV"
+
+  deploy-qa:
+    if: github.ref_name == 'qa'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying to QA"
+
+  deploy-uat:
+    if: github.ref_name == 'uat'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying to UAT"
+
+
+###========= OR ===========##
+
+# .github/workflows/
+# ├── dev.yml
+# ├── qa.yml
+# └── uat.yml
+
+name: Dev Pipeline
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Deploy to DEV"
+
+
+
