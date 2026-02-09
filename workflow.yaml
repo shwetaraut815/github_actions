@@ -1,0 +1,75 @@
+How a runner actually works (step-by-step)
+
+Let’s break the execution flow mechanically.
+
+Step 1: Event happens
+
+Example:
+
+on: push
+
+
+A push to repo occurs.
+
+Step 2: Workflow is triggered
+
+GitHub reads:
+
+.github/workflows/ci.yml
+
+Step 3: Job is scheduled
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+GitHub decides:
+
+Which runner type?
+
+Is runner available?
+
+Step 4: Runner picks the job
+
+Runner:
+
+Registers itself with GitHub
+
+Polls for jobs
+
+Locks the job (no other runner touches it)
+
+Step 5: Code is pulled
+
+This step is mandatory (people forget this):
+
+- uses: actions/checkout@v4
+
+
+Without this → repo code is NOT present.
+
+Step 6: Steps execute sequentially
+steps:
+  - run: npm install
+  - run: npm test
+
+
+Inside the runner:
+
+Shell is opened
+
+Commands executed
+
+Exit codes captured
+
+If any step fails → job fails.
+
+Step 7: Logs + status sent back
+
+Runner:
+
+Streams logs
+
+Sends success/failure
+
+Gets terminated (GitHub-hosted)
