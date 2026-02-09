@@ -1,0 +1,10 @@
+# by default all jobs run parallely we have to expicitly run job sequential
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
