@@ -1,0 +1,26 @@
+name: Node CI
+
+on: push   # run job after that event
+
+# events
+# push
+
+# pull_request
+
+# workflow_dispatch (manual)
+
+# schedule
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # runner create agent execute job and teminate
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4    # plugin used for pull code
+
+      - name: Install dependencies
+        run: npm install  #run shell command
+
+      - name: Run tests
+        run: npm test
